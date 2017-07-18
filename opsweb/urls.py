@@ -1,3 +1,5 @@
+#! coding: utf-8
+
 """opsweb URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,4 +20,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^dashboard/', include("dashboard.urls")),   #注意include里面的模块名称要使用双引号；
 ]
