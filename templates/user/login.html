@@ -1,10 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>{{ title }}</title>
+    <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js" type="text/javascript"></script>
+    <!--src 为路径-->
 </head>
 <body>
-
+    <ul>
+        <form action="/dashboard/login/" method="post">
+            <li><input type="text" name="username" id="id_username"></li>
+            <li><input type="password" name="password" id="id_password"></li>
+            <li><input type="submit" value="登录" id="form_submit"></li>
+        </form>
+    </ul>
 </body>
 </html>
+
+{#<script>#}
+{#     $(function() {#}
+{#         $("#form_submit").click(function(){#}
+{#             var username = $("#id_username").val();#}
+{#             var password = $("#id_password").val();#}
+{#            console.log("用户名： " + username);#}
+{#            console.log("密码： " + password);#}
+{#            return false;#}
+{#         })#}
+{#     });#}
+{#</script>#}

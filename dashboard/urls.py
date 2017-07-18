@@ -7,7 +7,11 @@ from . import views
 
 urlpatterns = [
     url(r'^hello/$', views.hello),
+    url(r'^login/$', views.login_view),
+    url(r'^logout/$', views.logout_view),
+
 ]
+
 
 
 
