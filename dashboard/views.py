@@ -47,3 +47,25 @@ def logout_view(request):
     """
     logout(request)
     return HttpResponse('user logout')
+
+
+def test_form(request):
+    """
+    form 测试
+    :param request: 
+    :return: 
+    """
+
+    # return HttpResponse('form 测试')
+    if request.method == 'GET':
+        return render(request,'test/test_form.html')
+    elif request.method == 'POST':
+        print request.POST
+        print request.POST.lists()   #list形式表现
+        print request.POST.dict()   #获取字典形式，value只显示一个值，
+        username = request.POST.get('username',None)
+        fav = request.POST.getlist('fav',None)   #getlist方法获取一个list，如果这个地方用get，只能获取列表的最后一个元素；
+        print username
+        print fav
+
+        return HttpResponse('OK')
