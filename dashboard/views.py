@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.contrib.auth import authenticate,login,logout
 
 # Create your views here.
@@ -23,6 +23,7 @@ def login_view(request):
     if request.method == 'GET':
         return render(request, 'user/login.html', {"title": "reboot 运维平台"})
     if request.method == 'POST':
+        ret = {"status": 0}
         username = request.POST.get('username',None)
         password = request.POST.get('password',None)
 
@@ -33,11 +34,18 @@ def login_view(request):
             print user
             if user.is_active:
                 login(request,user)  #传入的是user对象，而不是username
-                return HttpResponse('login success')
+
+                # return HttpResponse('login success')
             else:
-                return HttpResponse('user is block')
+                ret['status'] = 1
+                ret['errmsg'] = "user is block"
+
+                # return HttpResponse('user is block')
         else:
-            return HttpResponse('user or password is wrong!')
+            ret['status'] = 2
+            ret['errmsg'] = "user or password is wrong!"
+        return JsonResponse(ret, safe=True)
+            # return HttpResponse('user or password is wrong!')
 
 def logout_view(request):
     """

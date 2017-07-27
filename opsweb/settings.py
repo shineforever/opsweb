@@ -112,3 +112,8 @@ USE_TZ = False   #默认是Ture，时间是utc时间，由于我们要用本地�
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#在开发环境需要配置STATICFILES_DIRS，然后才能使用 {% static %}，生产环境由于是nginx控制，所以不需要配置STATICFILES_DIRS
+STATICFILES_DIRS = [
+    (os.path.join(BASE_DIR, 'static'))
+]
