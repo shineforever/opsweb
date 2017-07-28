@@ -14,6 +14,9 @@ def hello(request):
     """
     return HttpResponse("hello world!!!")
 
+def index(request):
+    return render(request,'public/index.html')
+
 def login_view(request):
     """
     登录页面

@@ -20,5 +20,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^dashboard/', include("dashboard.urls")),   #注意include里面的模块名称要使用双引号；
+    url(r'^', include("dashboard.urls")),
+    # url(r'^dashboard/', include("dashboard.urls")),   #注意include里面的模块名称要使用双引号；
 ]
