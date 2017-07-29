@@ -1,0 +1,30 @@
+{% extends "public/layout.html" %}
+
+{% block body %}
+{#    <ul>#}
+{#    {% for user in userlist %}#}
+{#    <li>{{ user.username }}</li>#}
+{#    {% endfor %}#}
+{#    </ul>#}
+
+    <table class="table">
+	<caption>用户列表</caption>
+   <thead>
+      {% for user in userlist %}
+      <tr>
+         <th>id</th>
+         <th>用户名</th>
+         <th>邮箱</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+          <td>{{ forloop.counter }}</td>
+         <td>{{ user.username }}</td>
+         <td>{{ user.email }}</td>
+      </tr>
+    {% endfor %}
+   </tbody>
+</table>
+{% endblock %}
+
