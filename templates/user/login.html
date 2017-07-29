@@ -60,9 +60,9 @@
     $('#loginform').on('submit', function () {
         var str = $('#loginform').serialize()
         $.post('#', str, function (res) {
-            console.log(res)
+{#            console.log(res)#}
             if (res.status == 0) {
-               alert("登陆成功")
+{#               alert("登陆成功")#}
               location.href=res.next_url
             } else {
                 swal({
