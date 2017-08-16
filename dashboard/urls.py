@@ -11,11 +11,14 @@ urlpatterns = [
     url(r'^$', views.IndexView.as_view()),
     url(r'^login/$', views.LoginView.as_view()),
     url(r'^logout/$', views.LogoutView.as_view()),
-    url(r'^user/userlist/$', user.UserListView.as_view()),
+    # url(r'^user/userlist/$', user.UserListView.as_view()),
     # url(r'^hello/$', views.hello),
     # url(r'^logout/$', views.logout_view),
     url(r'^test_form/$', views.test_form),
-
+    url(r'^user/', include([
+        url(r'^userlist/$',user.UserListView.as_view()),
+        url(r'^modify_user_status/$',user.ModifyUserStatusView.as_view()),
+    ]))
 ]
 
 
