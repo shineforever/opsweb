@@ -10,17 +10,17 @@
     <table class="table table-striped">
         <caption>用户列表</caption>
         <thead>
-            <tr>
-                <th>#</th>
-                <th>用户ID</th>
-                <th>用户名</th>
-                <th>邮箱</th>
-                <th>状态</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for user in page_obj.object_list %}
+        <tr>
+            <th>#</th>
+            <th>用户ID</th>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in page_obj.object_list %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ user.id }}</td>
@@ -61,26 +61,41 @@
                     </div>
                 </td>
             </tr>
-                {% endfor %}
+        {% endfor %}
         </tbody>
     </table>
 
     <div aria-label="...">
         <ul class="pagination">
-            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">首页</span></a></li>
-            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-            {% for p in page_obj.paginator.page_range %}
-            <li class="active"><a href="/user/userlist/?page={{ p }}">{{ p }}<span class="sr-only">(current)</span></a></li>
+            <li><a href="/user/userlist/?page=1" aria-label="Previous"><span
+                    aria-hidden="true">首页</span></a></li>
+            {% if page_obj.has_previous %}
+                <li><a href="/user/userlist/?page={{ page_obj.previous_page_number }}"
+                       aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+            {% else %}
+                <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
+            {% endif %}
+            {% for p in page_range %}
+                <li {% if page_obj.number == p %}
+                    class="active"
+                {% endif %}><a href="/user/userlist/?page={{ p }}">{{ p }}<span class="sr-only">(current)</span></a>
+                </li>
             {% endfor %}
-            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>
-            <li class="disabled"><a href="#" aria-label="Previous"><span aria-hidden="true">最后</span></a></li>
+            {% if page_obj.has_next %}
+                <li><a href="/user/userlist/?page={{ page_obj.next_page_number }}"
+                       aria-label="Previous"><span aria-hidden="true">下一页</span></a></li>
+            {% else %}
+                <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
+            {% endif %}
+            <li><a href="/user/userlist/?page={{ page_obj.paginator.num_pages }}"
+                   aria-label="Previous"><span aria-hidden="true">最后</span></a></li>
         </ul>
     </div>
 {% endblock %}
 
 {% block js %}
     <script>
-        function change_user_status(status_td_obj,status) {
+        function change_user_status(status_td_obj, status) {
             if (status === "true") {
                 status_td_obj.html("<span class='glyphicon glyphicon-warning-sign text-warning'>禁止</span>");
             } else {
@@ -88,22 +103,22 @@
             }
         }
         function modify_user_status(user_id) {
-            $.post("/user/modify_user_status/",{'user_id':user_id},function(res) {
-                    console.log(res)
+            $.post("/user/modify_user_status/", {'user_id': user_id}, function (res) {
+                console.log(res)
             })
         }
         $(function () {
             $(".modify_user_status").click(function () {
                 var click_obj = $(this);
                 var status = click_obj.attr('status');
-{#                console.log(status);#}
-{#                console.log(typeof status);#}
-                if (status === 'true'){
-                    click_obj.removeClass("btn-warning").addClass("btn-info").attr("status","false").text("开启");
-                }else{
-                    click_obj.removeClass("btn-info").addClass("btn-warning").attr("status","true").text("禁止");
+                {#                console.log(status);#}
+                {#                console.log(typeof status);#}
+                if (status === 'true') {
+                    click_obj.removeClass("btn-warning").addClass("btn-info").attr("status", "false").text("开启");
+                } else {
+                    click_obj.removeClass("btn-info").addClass("btn-warning").attr("status", "true").text("禁止");
                 }
-                change_user_status(click_obj.parents("td").siblings(".user_status"),status)
+                change_user_status(click_obj.parents("td").siblings(".user_status"), status)
                 modify_user_status(click_obj.attr('data'))
             });
         })
