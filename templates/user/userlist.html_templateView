@@ -20,7 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for user in object_list %}
+        {% for user in page_obj.object_list %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ user.id }}</td>
@@ -67,28 +67,27 @@
 
     <div aria-label="...">
         <ul class="pagination">
-            <li><a href="/user/userlistl/?page=1" aria-label="Previous"><span
+            <li><a href="/user/userlist/?page=1" aria-label="Previous"><span
                     aria-hidden="true">首页</span></a></li>
             {% if page_obj.has_previous %}
-                <li><a href="/user/userlistl/?page={{ page_obj.previous_page_number }}"
+                <li><a href="/user/userlist/?page={{ page_obj.previous_page_number }}"
                        aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
             {% else %}
                 <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
             {% endif %}
-{#            {% for p in page_obj.piginator.num_pages %}#}
             {% for p in page_range %}
                 <li {% if page_obj.number == p %}
                     class="active"
-                {% endif %}><a href="/user/userlistl/?page={{ p }}">{{ p }}<span class="sr-only">(current)</span></a>
+                {% endif %}><a href="/user/userlist/?page={{ p }}">{{ p }}<span class="sr-only">(current)</span></a>
                 </li>
             {% endfor %}
             {% if page_obj.has_next %}
-                <li><a href="/user/userlistl/?page={{ page_obj.next_page_number }}"
+                <li><a href="/user/userlist/?page={{ page_obj.next_page_number }}"
                        aria-label="Previous"><span aria-hidden="true">下一页</span></a></li>
             {% else %}
                 <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
             {% endif %}
-            <li><a href="/user/userlistl/?page={{ page_obj.paginator.num_pages }}"
+            <li><a href="/user/userlist/?page={{ page_obj.paginator.num_pages }}"
                    aria-label="Previous"><span aria-hidden="true">最后</span></a></li>
         </ul>
     </div>

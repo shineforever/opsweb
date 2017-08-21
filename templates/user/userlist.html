@@ -20,7 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for user in page_obj.object_list %}
+        {% for user in object_list %}
             <tr>
                 <td>{{ forloop.counter }}</td>
                 <td>{{ user.id }}</td>
@@ -75,6 +75,7 @@
             {% else %}
                 <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
             {% endif %}
+{#            {% for p in page_obj.piginator.num_pages %}#}
             {% for p in page_range %}
                 <li {% if page_obj.number == p %}
                     class="active"

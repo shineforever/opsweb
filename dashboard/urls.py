@@ -17,7 +17,7 @@ urlpatterns = [
     url(r'^test_form/$', views.test_form),
     url(r'^user/', include([
         # url(r'^userlist/$',user.UserListView.as_view()),  #templateView方式完成
-        url(r'^userlistl/$',user.USERLISTVIEW.as_view()),  #listView方式完成
+        url(r'^userlist/$',user.UserListView.as_view()),  #listView方式完成
         url(r'^modify_user_status/$',user.ModifyUserStatusView.as_view()),
     ]))
 ]
