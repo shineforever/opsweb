@@ -3,7 +3,7 @@ __author__ = 'shine_forever'
 __date__ = '2017/7/29 09:39'
 
 
-from django.views.generic import TemplateView,View
+from django.views.generic import TemplateView,View,ListView
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator,EmptyPage
 
@@ -37,6 +37,38 @@ class UserListView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         return super(UserListView,self).get(request,*args,**kwargs)
+
+class USERLISTVIEW(ListView):
+    """
+    用户ListView方法来线上用户列表页面
+    """
+    template_name = 'user/userlistl.html'
+    model = User
+    paginate_by = 10  #分页，每页线上的数据条数
+    before_index = 6
+    after_index = 5
+
+    def get_page_range(self,page_obj):
+        """
+        获取页面的动态区间，分页使用
+        :param page_obj: 
+        :return: 
+        """
+        start_index = page_obj.number - self.before_index  # 当前页面减去前面的索引
+        if start_index < 0:
+            start_index = 0
+        page_range = page_obj.paginator.page_range[start_index: page_obj.number + self.after_index]
+        return page_range
+
+    def get_context_data(self, **kwargs):
+        context = super(USERLISTVIEW,self).get_context_data(**kwargs)
+        page_obj = context['page_obj']
+        # page_num = context['page_obj'].number  #当前页面
+        # print page_obj.paginator.page_range  # 获取分页的页码list，[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+        # print page_num
+        context['page_range'] = self.get_page_range(page_obj)
+        return context
+
 
 
 class ModifyUserStatusView(View):

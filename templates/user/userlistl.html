@@ -1,0 +1,128 @@
+{% extends "public/layout.html" %}
+
+{% block body %}
+    {#    <ul>#}
+    {#    {% for user in userlist %}#}
+    {#    <li>{{ user.username }}</li>#}
+    {#    {% endfor %}#}
+    {#    </ul>#}
+
+    <table class="table table-striped">
+        <caption>用户列表</caption>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>用户ID</th>
+            <th>用户名</th>
+            <th>邮箱</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for user in object_list %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td class="user_status">
+                    {% if user.is_active %}
+                        <span class="glyphicon glyphicon-ok-circle text-success">开启</span>
+                    {% else %}
+                        <span class="glyphicon glyphicon-warning-sign text-warning">禁止</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <!-- Single button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-success dropdown-toggle" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">修改 <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Action</a></li>
+                                <li><a href="#">Another action</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                            {% if user.is_active %}
+                                <button type="button" class="btn btn-sm btn-warning modify_user_status" status="true"
+                                        data="{{ user.id }}">禁用
+                                </button>
+                            {% else %}
+                                <button type="button" class="btn btn-sm btn-info modify_user_status" status="false"
+                                        data="{{ user.id }}">启用
+                                </button>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div aria-label="...">
+        <ul class="pagination">
+            <li><a href="/user/userlistl/?page=1" aria-label="Previous"><span
+                    aria-hidden="true">首页</span></a></li>
+            {% if page_obj.has_previous %}
+                <li><a href="/user/userlistl/?page={{ page_obj.previous_page_number }}"
+                       aria-label="Previous"><span aria-hidden="true">上一页</span></a></li>
+            {% else %}
+                <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
+            {% endif %}
+{#            {% for p in page_obj.piginator.num_pages %}#}
+            {% for p in page_range %}
+                <li {% if page_obj.number == p %}
+                    class="active"
+                {% endif %}><a href="/user/userlistl/?page={{ p }}">{{ p }}<span class="sr-only">(current)</span></a>
+                </li>
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li><a href="/user/userlistl/?page={{ page_obj.next_page_number }}"
+                       aria-label="Previous"><span aria-hidden="true">下一页</span></a></li>
+            {% else %}
+                <li><a href="#"><span aria-hidden="true">下一页</span></a></li>
+            {% endif %}
+            <li><a href="/user/userlistl/?page={{ page_obj.paginator.num_pages }}"
+                   aria-label="Previous"><span aria-hidden="true">最后</span></a></li>
+        </ul>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function change_user_status(status_td_obj, status) {
+            if (status === "true") {
+                status_td_obj.html("<span class='glyphicon glyphicon-warning-sign text-warning'>禁止</span>");
+            } else {
+                status_td_obj.html("<span class='glyphicon glyphicon-ok-circle text-success'>开启</span>");
+            }
+        }
+        function modify_user_status(user_id) {
+            $.post("/user/modify_user_status/", {'user_id': user_id}, function (res) {
+                console.log(res)
+            })
+        }
+        $(function () {
+            $(".modify_user_status").click(function () {
+                var click_obj = $(this);
+                var status = click_obj.attr('status');
+                {#                console.log(status);#}
+                {#                console.log(typeof status);#}
+                if (status === 'true') {
+                    click_obj.removeClass("btn-warning").addClass("btn-info").attr("status", "false").text("开启");
+                } else {
+                    click_obj.removeClass("btn-info").addClass("btn-warning").attr("status", "true").text("禁止");
+                }
+                change_user_status(click_obj.parents("td").siblings(".user_status"), status)
+                modify_user_status(click_obj.attr('data'))
+            });
+        })
+    </script>
+{% endblock %}
+
