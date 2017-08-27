@@ -19,6 +19,7 @@ urlpatterns = [
         # url(r'^userlist/$',user.UserListView.as_view()),  #templateView方式完成
         url(r'^userlist/$',user.UserListView.as_view()),  #listView方式完成
         url(r'^modify_user_status/$',user.ModifyUserStatusView.as_view()),
+        url(r'^modifydepartment/$', user.ModifyDepartmentView.as_view()),
     ]))
 ]
 

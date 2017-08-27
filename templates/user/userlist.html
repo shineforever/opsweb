@@ -41,11 +41,7 @@
                                     aria-haspopup="true" aria-expanded="false">修改 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Action</a></li>
-                                <li><a href="#">Another action</a></li>
-                                <li><a href="#">Something else here</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="#">Separated link</a></li>
+                                <li><a href="/user/modifydepartment/?user={{ user.id }}">修改部门</a></li>
                             </ul>
                             {% if user.is_active %}
                                 <button type="button" class="btn btn-sm btn-warning modify_user_status" status="true"

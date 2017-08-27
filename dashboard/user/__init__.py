@@ -4,10 +4,13 @@ __date__ = '2017/7/29 09:39'
 
 
 from django.views.generic import TemplateView,View,ListView
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator,EmptyPage
 
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse,Http404
+
+from dashboard.models import Department,Server,Profile
 
 # class UserListView(TemplateView):
 #     template_name = "user/userlist.html"
@@ -92,3 +95,35 @@ class ModifyUserStatusView(View):
         return JsonResponse(res,safe=True)
     def get(self,request):
         return HttpResponse('OK')
+
+
+class ModifyDepartmentView(TemplateView):
+    template_name = "user/modify_department.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ModifyDepartmentView, self).get_context_data(**kwargs)
+        context['user_obj'] = get_object_or_404(User, pk=self.request.GET.get('user', None))
+        context['departments'] = Department.objects.all()
+
+        return context
+
+    def post(self, request):
+        user_id = request.POST.get('id', None)
+        department_id = request.POST.get('department', None)
+        if not user_id or not department_id:
+            raise Http404
+
+        try:
+            user_obj = User.objects.get(pk=user_id)
+            department_obj = Department.objects.get(pk=department_id)
+        except:
+            raise Http404
+        else:
+            user_obj.profile.department = department_obj
+            user_obj.profile.save()
+        return redirect("/user/userlist/")
+
+
+    def get(self, request, *args, **kwargs):
+        self.request = request
+        return super(ModifyDepartmentView, self).get(request, *args, **kwargs)
