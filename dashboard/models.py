@@ -29,12 +29,14 @@ class Department(models.Model):
     class Meta:
         db_table = "department"
 
+
 class Profile(models.Model):
     user            = models.OneToOneField(User,default=1)
     phone           = models.CharField(max_length=11, null=True)
     title           = models.CharField(max_length=32, null=True)
     #department      = models.CharField(max_length=32, null=True)
     department      = models.ForeignKey(Department, null=True)
+    cn_name            = models.CharField(verbose_name=u'中文名',max_length=20,null=True)
 
     class Meta:
         db_table = "user_profile"

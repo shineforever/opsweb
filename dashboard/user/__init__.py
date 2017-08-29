@@ -11,6 +11,7 @@ from django.core.paginator import Paginator,EmptyPage
 from django.http import HttpResponse, JsonResponse,Http404
 
 from dashboard.models import Department,Server,Profile
+from django.conf import settings
 
 # class UserListView(TemplateView):
 #     template_name = "user/userlist.html"
@@ -73,7 +74,6 @@ class UserListView(ListView):
         return context
 
 
-
 class ModifyUserStatusView(View):
     """
     修改服务器的状态
@@ -127,3 +127,40 @@ class ModifyDepartmentView(TemplateView):
     def get(self, request, *args, **kwargs):
         self.request = request
         return super(ModifyDepartmentView, self).get(request, *args, **kwargs)
+
+
+class ModifyUserPhoneView(TemplateView):
+    """
+    修改指定账户的电话
+    """
+    template_name = "user/modify_userphone.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ModifyUserPhoneView, self).get_context_data(**kwargs)
+        uid = self.request.GET.get('uid')
+        context['user_obj']=self.get_user_obj(uid)
+        return context
+
+
+    def post(self, request):
+        user_id = request.POST.get('id', None)
+        phone = request.POST.get('phone', None)
+        #获取user对象
+        user_obj = self.get_user_obj(user_id)
+        #修改指定用户的phone，然后保存；
+        user_obj.profile.phone = phone
+        user_obj.profile.save()
+        return render(request,settings.TEMPLATE_JUMP,{'status':0,'next_url':'/user/userlist/'})
+
+
+    def get_user_obj(self,uid):
+        """
+        获得user的对象，处理异常
+        :param self: 
+        :param uid: 
+        :return: 
+        """
+        try:
+            return User.objects.get(pk=uid)
+        except User.DoesNotExist:
+            raise Http404

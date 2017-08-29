@@ -14,7 +14,9 @@
             <th>#</th>
             <th>用户ID</th>
             <th>用户名</th>
+            <th>中文名</th>
             <th>邮箱</th>
+            <th>电话</th>
             <th>状态</th>
             <th>操作</th>
         </tr>
@@ -25,7 +27,9 @@
                 <td>{{ forloop.counter }}</td>
                 <td>{{ user.id }}</td>
                 <td>{{ user.username }}</td>
+                <td>{{ user.profile.cn_name|default_if_none:"" }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.profile.phone|default_if_none:"" }}</td>
                 <td class="user_status">
                     {% if user.is_active %}
                         <span class="glyphicon glyphicon-ok-circle text-success">开启</span>
@@ -42,6 +46,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a href="/user/modifydepartment/?user={{ user.id }}">修改部门</a></li>
+                                <li><a href="/user/modifyphone/?uid={{ user.id }}">修改手机号</a></li>
                             </ul>
                             {% if user.is_active %}
                                 <button type="button" class="btn btn-sm btn-warning modify_user_status" status="true"

@@ -1,0 +1,25 @@
+{% extends "public/layout.html" %}
+index.html
+{% block body %}
+    {% if status == 0 %}
+        <h1>修改成功</h1>
+    {% else %}
+        <h1>修改失败,失败原因： {{ errmsg }}</h1>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        var status = {{ status }};
+        var next_url = "{{ next_url }}";
+        var timejump = 1500;
+        $(function () {
+            if (status != 0) {
+                timejump = 5000
+            }
+            setTimeout(function () {
+                window.location.href = next_url;
+            }, timejump)
+        })
+    </script>
+{% endblock %}
