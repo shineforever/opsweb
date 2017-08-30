@@ -8,7 +8,8 @@ from django.views.generic import View
 
 from django.contrib.auth.models import User
 
-
+import logging
+logger = logging.getLogger('opsweb')
 
 # Create your views here.
 
@@ -18,6 +19,8 @@ def hello(request):
     :param request: 
     :return: 
     """
+    logger.info('hello 测试')
+    logger.error('warning...')
     return HttpResponse("hello world!!!")
 
 

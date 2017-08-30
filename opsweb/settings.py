@@ -120,3 +120,52 @@ STATICFILES_DIRS = [
 
 
 TEMPLATE_JUMP = 'public/jump.html'
+
+# django 日志
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '%(asctime)s %(name)s [%(levelname)s] %(message)s'
+        },
+    'reboot':{
+            'format': '%(asctime)s - %(pathname)s:%(lineno)d[%(levelname)s] - %(message)s'
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'opsweb_file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'reboot',
+            'filename': os.path.join(BASE_DIR, 'log', 'opsweb.log'),
+            'maxBytes': 104857600,
+            'backupCount': 5
+        },
+        'django': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'simple',
+            'filename': os.path.join(BASE_DIR, 'log', 'django.log'),
+            'maxBytes': 104857600,
+            'backupCount': 5
+        },
+    },
+    'loggers': {
+        'opsweb': {
+            'handlers': ['opsweb_file'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+        'django': {
+            'handlers': ['django'],
+            'propagate': True,
+            'level': 'INFO',
+        },
+    }
+}
